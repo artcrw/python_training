@@ -2,7 +2,7 @@
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.common.exceptions import NoAlertPresentException
-import unittest,
+import unittest
 
 class TestAddGroup(unittest.TestCase):
     def setUp(self):
@@ -26,7 +26,7 @@ class TestAddGroup(unittest.TestCase):
     def init_group_creation(self, wd):
         wd.find_element_by_name("new").click()
 
-    def fill_group_form(self, wd, header, name, footer):
+    def fill_group_form(self, wd, name, header, footer):
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys(name)
