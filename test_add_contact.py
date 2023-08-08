@@ -12,9 +12,19 @@ class TestAddContact(unittest.TestCase):
     def test_add_contact(self):
         wd = self.wd
         self.open_home_page(wd)
-        self.login(wd)
+        self.login(wd, "admin", "secret")
         self.init_contact_creation(wd)
-        self.fill_contect_form(wd)
+        self.fill_contect_form(wd, "name", "name2", "name3", "98394838498")
+        self.submit_contact_creation(wd)
+        self.return_to_home_page(wd)
+        self.logout(wd)
+
+    def test_add_empty_contact(self):
+        wd = self.wd
+        self.open_home_page(wd)
+        self.login(wd, "admin", "secret")
+        self.init_contact_creation(wd)
+        self.fill_contect_form(wd, "", "", "", "")
         self.submit_contact_creation(wd)
         self.return_to_home_page(wd)
         self.logout(wd)
@@ -28,30 +38,31 @@ class TestAddContact(unittest.TestCase):
     def submit_contact_creation(self, wd):
         wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
 
-    def fill_contect_form(self, wd):
+    def fill_contect_form(self, wd, firstname, middlename, lastname, mobile):
         wd.find_element_by_name("firstname").click()
         wd.find_element_by_name("firstname").clear()
-        wd.find_element_by_name("firstname").send_keys("name")
+        wd.find_element_by_name("firstname").send_keys(firstname)
         wd.find_element_by_name("theform").click()
         wd.find_element_by_name("middlename").click()
         wd.find_element_by_name("middlename").clear()
-        wd.find_element_by_name("middlename").send_keys("name2")
+        wd.find_element_by_name("middlename").send_keys(middlename)
         wd.find_element_by_name("lastname").click()
         wd.find_element_by_name("lastname").clear()
-        wd.find_element_by_name("lastname").send_keys("name3")
+        wd.find_element_by_name("lastname").send_keys(lastname)
         wd.find_element_by_name("mobile").click()
         wd.find_element_by_name("mobile").clear()
-        wd.find_element_by_name("mobile").send_keys("98394838498")
+        wd.find_element_by_name("mobile").send_keys(mobile)
 
     def init_contact_creation(self, wd):
         wd.find_element_by_link_text("add new").click()
 
-    def login(self, wd):
+    def login(self, wd, username, password):
         wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys("admin")
+        wd.find_element_by_name("user").send_keys(username)
         wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys("secret")
+        wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//input[@value='Login']").click()
+
 
     def open_home_page(self, wd):
         wd.get("http://localhost/addressbook/index.php")
