@@ -9,35 +9,17 @@ class TestAddContact(unittest.TestCase):
     def setUp(self):
         self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
-    
-    def test_add_contact(self):
-        wd = self.wd
+
+    def open_home_page(self, wd):
+        wd.get("http://localhost/addressbook/index.php")
+
+    def login(self, wd, username, password):
         self.open_home_page(wd)
-        self.login(wd, username="admin", password="secret")
-        self.init_contact_creation(wd)
-        self.fill_contect_form(wd, Contact(firstname="name", middlename="name2", lastname="name3", mobile="98394838498"))
-        self.submit_contact_creation(wd)
-        self.return_to_home_page(wd)
-        self.logout(wd)
-
-    def test_add_empty_contact(self):
-        wd = self.wd
-        self.open_home_page(wd)
-        self.login(wd, username="admin", password="secret")
-        self.init_contact_creation(wd)
-        self.fill_contect_form(wd, Contact(firstname="", middlename="", lastname="", mobile=""))
-        self.submit_contact_creation(wd)
-        self.return_to_home_page(wd)
-        self.logout(wd)
-
-    def logout(self, wd):
-        wd.find_element_by_link_text("Logout").click()
-
-    def return_to_home_page(self, wd):
-        wd.find_element_by_link_text("home page").click()
-
-    def submit_contact_creation(self, wd):
-        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        wd.find_element_by_name("user").clear()
+        wd.find_element_by_name("user").send_keys(username)
+        wd.find_element_by_name("pass").clear()
+        wd.find_element_by_name("pass").send_keys(password)
+        wd.find_element_by_xpath("//input[@value='Login']").click()
 
     def fill_contect_form(self, wd, contact):
         wd.find_element_by_name("firstname").click()
@@ -54,19 +36,36 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_name("mobile").clear()
         wd.find_element_by_name("mobile").send_keys(contact.mobile)
 
+    def submit_contact_creation(self, wd):
+        wd.find_element_by_xpath("//div[@id='content']/form/input[21]").click()
+        self.return_to_home_page(wd)
+
+
     def init_contact_creation(self, wd):
         wd.find_element_by_link_text("add new").click()
 
-    def login(self, wd, username, password):
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(username)
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//input[@value='Login']").click()
+    def return_to_home_page(self, wd):
+        wd.find_element_by_link_text("home page").click()
 
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
 
-    def open_home_page(self, wd):
-        wd.get("http://localhost/addressbook/index.php")
+    def test_add_contact(self):
+        wd = self.wd
+        self.login(wd, username="admin", password="secret")
+        self.init_contact_creation(wd)
+        self.fill_contect_form(wd, Contact(firstname="name", middlename="name2", lastname="name3", mobile="98394838498"))
+        self.submit_contact_creation(wd)
+        self.logout(wd)
+
+    def test_add_empty_contact(self):
+        wd = self.wd
+        self.login(wd, username="admin", password="secret")
+        self.init_contact_creation(wd)
+        self.fill_contect_form(wd, Contact(firstname="", middlename="", lastname="", mobile=""))
+        self.submit_contact_creation(wd)
+        self.logout(wd)
+
 
     def is_element_present(self, how, what):
         try: self.wd.find_element(by=how, value=what)
