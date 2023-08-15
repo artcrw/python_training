@@ -1,7 +1,7 @@
 from selenium import webdriver
 
-class Application:
 
+class Application:
     def __int__(self):
         self.wd = webdriver.Firefox()
         self.wd.implicitly_wait(30)
@@ -46,8 +46,7 @@ class Application:
         wd.find_element_by_name("submit").click()
         self.return_to_group_page()
 
-
-    def return_to_group_page(self,):
+    def return_to_group_page(self):
         wd = self.wd
         wd.find_element_by_link_text("group page").click()
 
