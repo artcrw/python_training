@@ -43,6 +43,20 @@ class ContactHelper:
         wd.find_element_by_css_selector("div.msgbox")
         self.contact_cache = None
 
+    def delete_contract_by_index(self, index):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.select_contract_by_index(index)
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to.alert.accept()
+        wd.find_element_by_css_selector("div.msgbox")
+        self.contact_cache = None
+
+    def select_contract_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def select_first_contact(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
@@ -52,6 +66,16 @@ class ContactHelper:
         self.app.open_home_page()
         # open first contact
         wd.find_element_by_xpath("//img[@alt='Edit']").click()
+        # edit contact
+        self.fill_contact_form(contact)
+        wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
+        self.contact_cache = None
+
+    def mod_contact_by_index(self, index, contact):
+        wd = self.app.wd
+        self.app.open_home_page()
+        # open first contact
+        wd.find_elements_by_xpath("//img[@alt='Edit']")[index].click()
         # edit contact
         self.fill_contact_form(contact)
         wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()

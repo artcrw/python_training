@@ -47,6 +47,19 @@ class GroupHelper:
         self.return_to_group_page()
         self.group_cache = None
 
+    def delete_group_by_index(self, index):
+        wd = self.app.wd
+        self.open_group_page()
+        self.select_group_by_index(index)
+        # submit deletion
+        wd.find_element_by_name("delete").click()
+        self.return_to_group_page()
+        self.group_cache = None
+
+    def select_group_by_index(self, index):
+        wd = self.app.wd
+        wd.find_elements_by_name("selected[]")[index].click()
+
     def select_first_group(self):
         wd = self.app.wd
         wd.find_element_by_name("selected[]").click()
@@ -55,6 +68,16 @@ class GroupHelper:
         wd = self.app.wd
         self.open_group_page()
         self.select_first_group()
+        wd.find_element_by_name("edit").click()
+        self.fill_form(group)
+        wd.find_element_by_xpath("//input[@name='update']").click()
+        self.return_to_group_page()
+        self.group_cache = None
+
+    def mod_group_by_index(self, index, group):
+        wd = self.app.wd
+        self.open_group_page()
+        self.select_group_by_index(index)
         wd.find_element_by_name("edit").click()
         self.fill_form(group)
         wd.find_element_by_xpath("//input[@name='update']").click()
