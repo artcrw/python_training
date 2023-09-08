@@ -7,7 +7,7 @@ def test_mod_first_contact(app):
         app.contact.creation(Contact(firstname="create_for_mod"))
     old_contacts = app.contact.get_contact_list()
     index = randrange(len(old_contacts))
-    contact = Contact(firstname="first", middlename="middle", lastname="last", mobile="999999999")
+    contact = Contact(firstname="first", middlename="middle", lastname="last", mobilephone="999999999")
     contact.id = old_contacts[index].id
     app.contact.mod_contact_by_index(index, contact)
     assert len(old_contacts) == app.contact.count()
