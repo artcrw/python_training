@@ -1,13 +1,22 @@
 import re
+from model.contact import Contact
 
 
 def test_phones_on_home_page(app):
+    if app.contact.count() == 0:
+        app.contact.creation(Contact(firstname="firstname", lastname="lastname", id="id", homephone="homephone",
+                                     mobilephone="mobilephone",workphone="workphone", secondaryphone="secondaryphone",
+                                     address="address",email="email", email2="email2", email3="email3"))
     contact_from_home_page = app.contact.get_contact_list()[0]
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
     assert contact_from_home_page.all_phones_from_home_page == merge_phones_like_on_home_page(contact_from_edit_page)
 
 
 def test_phones_on_contact_view_page(app):
+    if app.contact.count() == 0:
+        app.contact.creation(Contact(firstname="firstname", lastname="lastname", id="id", homephone="homephone",
+                                     mobilephone="mobilephone",workphone="workphone", secondaryphone="secondaryphone",
+                                     address="address",email="email", email2="email2", email3="email3"))
     contact_from_view_page = app.contact.get_contact_from_view_page(0)
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
     assert contact_from_view_page.homephone == contact_from_edit_page.homephone
@@ -17,6 +26,10 @@ def test_phones_on_contact_view_page(app):
 
 
 def test_all_info_on_home_page(app):
+    if app.contact.count() == 0:
+        app.contact.creation(Contact(firstname="firstname", lastname="lastname", id="id", homephone="homephone",
+                                     mobilephone="mobilephone",workphone="workphone", secondaryphone="secondaryphone",
+                                     address="address",email="email", email2="email2", email3="email3"))
     contact_from_home_page = app.contact.get_contact_list()[0]
     contact_from_edit_page = app.contact.get_contact_info_from_edit_page(0)
     assert contact_from_home_page.firstname == contact_from_edit_page.firstname
