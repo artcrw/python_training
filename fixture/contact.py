@@ -20,9 +20,6 @@ class ContactHelper:
         self.change_field_value("email3", contact.email3)
         self.change_field_value("address", contact.address)
 
-
-
-
     def change_field_value(self, field_name, text):
         wd = self.app.wd
         if text is not None:
@@ -63,6 +60,21 @@ class ContactHelper:
         wd.find_element_by_css_selector("div.msgbox")
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.selected_contact_by_id(id)
+        # submit deletion
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        wd.switch_to.alert.accept()
+        wd.find_element_by_css_selector("div.msgbox")
+        self.app.open_home_page()
+        self.contact_cache = None
+
+    def selected_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
     def select_contract_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
@@ -89,6 +101,19 @@ class ContactHelper:
         # edit contact
         self.fill_contact_form(contact)
         wd.find_element_by_xpath("//div[@id='content']/form/input[22]").click()
+        self.contact_cache = None
+
+    def edit_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_xpath("//*[@id='%s']/../..//*[@title='Edit']" % id).click()
+
+    def mod_contact_by_id(self, contact):
+        wd = self.app.wd
+        self.app.open_home_page()
+        self.edit_contact_by_id(contact.id)
+        self.fill_contact_form(contact)
+        wd.find_element_by_name("update").click()
+        self.return_to_home_page()
         self.contact_cache = None
 
     def return_to_home_page(self):
