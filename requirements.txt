@@ -1,0 +1,5 @@
+PyMySQL~=1.1.0
+pony~=0.7.17
+selenium~=3.141.0
+jsonpickle~=3.0.2
+pytest~=7.4.0
